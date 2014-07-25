@@ -1,4 +1,7 @@
-
+if (!require(gtools)) {
+  install.packages("gtools")
+  library(gtools)
+}
 library(shiny)
 shinyServer(
   function(input, output) {
@@ -6,6 +9,9 @@ shinyServer(
     y <- reactive({iris[[input$yvariable]]})
     
     lmout <- reactive({lm(x() ~ y())})
+    summ <- reactive({summary(lmout())})
+    summStrings <- reactive({capture.output(summ())})
+    summString <- reactive({paste(summStrings(), collapse="\n")})
     
     output$plotout <- renderPlot({
       plot(x(), y(), col=iris$Species, 
@@ -16,6 +22,6 @@ shinyServer(
       
       
     })
-    output$lmsummary <- renderText({summary(lmout())})
+    output$lmsummary <- renderText({summString()})
   }
 )
