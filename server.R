@@ -8,7 +8,7 @@ shinyServer(
     x <- reactive({iris[[input$xvariable]]})
     y <- reactive({iris[[input$yvariable]]})
     
-    lmout <- reactive({lm(x() ~ y())})
+    lmout <- reactive({lm(y() ~ x())})
     summ <- reactive({summary(lmout())})
     summStrings <- reactive({capture.output(summ())})
     summString <- reactive({paste(summStrings(), collapse="\n")})
